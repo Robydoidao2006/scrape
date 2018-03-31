@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" type="text/css" href="assets/css/style2.css">
+    <meta charset="UTF-8">
+    <title>Mongo Scraper</title>
+  </head>
+  <body>
+    <div class="container" id="mainContainer">
+      <div class="jumbotron" id="mainJumbotron"> 
+          <p class="tittle">Mongo Scraper!</p>
+          <p class="sub-tittle">Broken Edition...
+            <!-- scrape button -->
+           <a href="/scrape"><button type="button" class="Scrape" onclick="alert('new articles were screped')">Scrape me!!</button></a>
+          
+          </p>
+      </div>
+    </div>
+         <button type="button" class="SaveArticle">Add me!</button>
+          <button type="button" class="DeleteArticle">Delete me!!</button>
+      <div id="wrapper">
+          <div id="articles"></div>
+         
+          <div id="notes"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
