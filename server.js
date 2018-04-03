@@ -2,6 +2,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+// var scrape = require("scripts/scrape.js");
 
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
@@ -11,8 +12,8 @@ var cheerio = require("cheerio");
 
 // Require all models
 var db = require("./models");
-
-var PORT = 3002;
+//setting up port 
+var PORT = process.env.PORT || 3000;
 
 // Initialize Express
 var app = express();
@@ -27,10 +28,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/week18Populater");
+mongoose.connect("mongodb://localhost/robDB");
 
 // Routes
 
+var scrape = function(){
 // A GET route for scraping the echoJS website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
@@ -39,17 +41,18 @@ app.get("/scrape", function(req, res) {
     var $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
-    $("article h2").each(function(i, element) {
+    $(".theme-summary").each(function(i, element) {
+  
       // Save an empty result object
       var result = {};
 
       // Add the text and href of every link, and save them as properties of the result object
-      result.title = $(this)
-        .children("a")
-        .text();
-      result.link = $(this)
-        .children("a")
-        .attr("href");
+      result.title = $(this).children("a").text();
+
+      result.summary = $(this).children(".summary").text().trim();
+
+      result.link = $(this).children("a").attr("href");
+
 
       // Create a new Article using the `result` object built from scraping
       db.Article.create(result)
@@ -67,6 +70,7 @@ app.get("/scrape", function(req, res) {
     res.send("Scrape Complete");
   });
 });
+};
 
 // Route for getting all Articles from the db
 app.get("/articles", function(req, res) {
